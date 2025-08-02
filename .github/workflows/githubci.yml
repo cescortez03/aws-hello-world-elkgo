@@ -29,12 +29,15 @@ jobs:
       contents: write
       pages: write
     runs-on: ubuntu-latest
+    outputs:
+      GIT_TAG: ${{ steps.tag_release.outputs.NEW_TAG }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
         with: 
           fetch-depth: 0
       - name: tag_release
+        id: tag_release
         run: |
           set -x
           git fetch --tags
@@ -57,6 +60,7 @@ jobs:
         run: |
           aws ecr get-login-password --region us-west-2 | docker login --username AWS --password-stdin 925526501192.dkr.ecr.us-west-2.amazonaws.com
           docker build -t helloworld-elktgo .
+          echo "heloooooooo"
           echo ${{ steps.tag_release.outputs.NEW_TAG }}
           docker tag helloworld-elktgo:latest 925526501192.dkr.ecr.us-west-2.amazonaws.com/helloworld-elktgo:${{ steps.tag_release.outputs.NEW_TAG }}
           docker push 925526501192.dkr.ecr.us-west-2.amazonaws.com/helloworld-elktgo:${{ steps.tag_release.outputs.NEW_TAG }}
