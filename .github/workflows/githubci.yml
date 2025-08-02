@@ -60,8 +60,6 @@ jobs:
         run: |
           aws ecr get-login-password --region us-west-2 | docker login --username AWS --password-stdin 925526501192.dkr.ecr.us-west-2.amazonaws.com
           docker build -t helloworld-elktgo .
-          echo "heloooooooo"
-          echo ${{ steps.tag_release.outputs.NEW_TAG }}
           docker tag helloworld-elktgo:latest 925526501192.dkr.ecr.us-west-2.amazonaws.com/helloworld-elktgo:${{ steps.tag_release.outputs.NEW_TAG }}
           docker push 925526501192.dkr.ecr.us-west-2.amazonaws.com/helloworld-elktgo:${{ steps.tag_release.outputs.NEW_TAG }}
   deploy_sandbox:
@@ -79,7 +77,7 @@ jobs:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     name: "deploy-prod-us-west-2"
     runs-on: ubuntu-latest
-    needs: deploy_sandbox
+    needs: [deploy_sandbox,release]
     env:
       S3_BUCKET_TF_STATE: "terraform-state-925526501192-us-west-2"
     steps:
@@ -105,7 +103,7 @@ jobs:
         continue-on-error: false
       - name: terraform-apply
         id: apply
-        run: terraform -chdir=deploy/terraform apply -auto-approve
+        run: terraform -chdir=deploy/terraform apply -var="tag_version=${{needs.release.outputs.NEW_TAG}}" -auto-approve
         continue-on-error: false
 
 

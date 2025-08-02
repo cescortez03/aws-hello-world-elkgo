@@ -2,7 +2,7 @@ resource "aws_lambda_function" "lambda_hworld" {
   function_name = "hello_world"
   role          = aws_iam_role.lambda_role.arn
   package_type  = "Image"
-  image_uri     = "${aws_ecr_repository.helloworld_elktgo.repository_url}:latest"
+  image_uri     = "${aws_ecr_repository.helloworld_elktgo.repository_url}:${var.tag_version}"
 
   memory_size = 128
   timeout     = 15
