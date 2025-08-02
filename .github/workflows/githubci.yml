@@ -37,6 +37,7 @@ jobs:
           fetch-depth: 0
       - name: tag_release
         run: |
+          set -x
           git fetch --tags
           LATEST_TAG=$(git describe --tags --abbrev=0)
           NEW_TAG=$(echo $LATEST_TAG | awk -F. '{ printf("%s.%s.%s", $1, $2, $3+1) }')
@@ -99,7 +100,7 @@ jobs:
         continue-on-error: false
       - name: terraform-apply
         id: apply
-        run: terraform -chdir=deploy/terraform apply -auto-aprove
+        run: terraform -chdir=deploy/terraform apply -auto-approve
         continue-on-error: false
 
 
