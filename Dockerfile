@@ -6,4 +6,4 @@ COPY requirements.txt .
 COPY src/main.py .
 RUN pip install -r requirements.txt
 
-CMD ["main.lambda_handler" ]
+CMD ["src/app/main.lambda_handler" ]
