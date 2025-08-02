@@ -3,7 +3,6 @@ def lambda_handler(event,context):
         "statusCode": 200,
         "body": "Hola Mundo!",
         "headers": {
-            "Content-Type": "application/json",
-            "Custom-Header": "value"
+            "Content-Type": "application/json"
         }    
     }
