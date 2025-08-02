@@ -31,9 +31,9 @@ resource "aws_api_gateway_deployment" "deployment" {
 }
 
 resource "aws_api_gateway_stage" "apigw_stage" {
-  rest_api_id       = aws_api_gateway_rest_api.api.id
-  deployment_id     = aws_api_gateway_deployment.deployment.id
-  stage_name        = var.environment
+  rest_api_id   = aws_api_gateway_rest_api.api.id
+  deployment_id = aws_api_gateway_deployment.deployment.id
+  stage_name    = var.environment
 }
 
 resource "aws_lambda_permission" "lambda_api_permission" {

@@ -6,6 +6,7 @@ resource "aws_lambda_function" "lambda_hworld" {
 
   memory_size = 128
   timeout     = 15
+
 }
 
 resource "aws_iam_role" "lambda_role" {
