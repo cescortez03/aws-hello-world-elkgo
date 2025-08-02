@@ -36,7 +36,6 @@ jobs:
           git fetch --tags
           LATEST_TAG=$(git describe --tags --abbrev=0)
           NEW_TAG=$(echo $LATEST_TAG | awk -F. '{ printf("%s.%s.%s", $1, $2, $3+1) }')
-          echo "NEW_TAG=$NEW_TAG" >> $GITHUB_OUTPUT
           git config --global user.name "SAGithubActions"
           git config --global user.email "sa.actions@github.com"
           git tag $NEW_TAG
