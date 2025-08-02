@@ -1,4 +1,4 @@
-name: CI/CD Hello World
+name: CI/CD
 on:
   pull_request:
     types: [opened, synchronize]
@@ -18,9 +18,9 @@ jobs:
           fetch-depth: 0
       - name: pr
         run: |
-          echo "Running pr"
+          echo "Running pr..."
           echo "Build microservice, ie: docker build... Dockerfile"
-          echo "Run linting and static analyzers."
+          echo "Run linting and static analyzers against previous docker image."
 
   release:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
@@ -44,14 +44,11 @@ jobs:
           git tag $NEW_TAG
           git push origin $NEW_TAG
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: build
+        uses: docker/setup-buildx-action@v3
         run: |
-          "echo Build microservice, ie: docker build... Dockerfile.hello " 
-          "echo "Push image to a container registry."
-
-
-
+          docker build  Dockerfile
   deploy_sandbox:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     name: "deploy-sandbox-us-west-2"
@@ -63,7 +60,6 @@ jobs:
       - name: deploy-sandbox
         run: |
           echo "Running Deploy Sandbox Job"
-          # Add sandbox deployment logic (e.g., Terraform apply to sandbox)
 
   deploy_prod:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
@@ -76,4 +72,3 @@ jobs:
       - name: deploy-prod
         run: |
           echo "Running Deploy Prod Job"
-          # Add prod deployment logic (e.g., Terraform apply to prod)
