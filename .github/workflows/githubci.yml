@@ -45,6 +45,7 @@ jobs:
           git config --global user.email "sa.actions@github.com"
           git tag $NEW_TAG
           git push origin $NEW_TAG
+          echo "NEW_TAG=$NEW_TAG" >> $GITHUB_OUTPUT
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Configure AWS credentials
@@ -57,8 +58,8 @@ jobs:
         run: |
           aws ecr get-login-password --region us-west-2 | docker login --username AWS --password-stdin 925526501192.dkr.ecr.us-west-2.amazonaws.com
           docker build -t helloworld-elktgo .
-          docker tag helloworld-elktgo:latest 925526501192.dkr.ecr.us-west-2.amazonaws.com/helloworld-elktgo:latest
-          docker push 925526501192.dkr.ecr.us-west-2.amazonaws.com/helloworld-elktgo:latest
+          docker tag helloworld-elktgo:latest 925526501192.dkr.ecr.us-west-2.amazonaws.com/helloworld-elktgo:${{ steps.tag_release.outputs.NEW_TAG }}
+          docker push 925526501192.dkr.ecr.us-west-2.amazonaws.com/helloworld-elktgo:${{ steps.tag_release.outputs.NEW_TAG }}
   deploy_sandbox:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     name: "deploy-sandbox-us-west-2"
