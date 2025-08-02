@@ -1,2 +1,2 @@
-def lambda_handler():
+def lambda_handler(event,context):
     return {"message": "Hola Mundo"}
