@@ -10,11 +10,11 @@ resource "aws_lambda_function" "lambda_hworld" {
 
 resource "aws_iam_role" "lambda_role" {
   name               = "lambda-hworld-role"
-  assume_role_policy = data.aws_iam_policy_document.lambda_role_policy.json
+  assume_role_policy = data.aws_iam_policy_document.lambda_assume_role_policy.json
 }
 
 resource "aws_iam_role_policy" "lambda_role_policy" {
-  policy = data.aws_iam_policy_document.lambda_role_policy.json
+  policy = data.aws_iam_policy_document.lambda_policy.json
   role   = aws_iam_role.lambda_role.name
 }
 
