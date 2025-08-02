@@ -103,7 +103,7 @@ jobs:
         continue-on-error: false
       - name: terraform-apply
         id: apply
-        run: terraform -chdir=deploy/terraform apply -var="tag_version=${{needs.release.outputs.NEW_TAG}}" -auto-approve
+        run: terraform -chdir=deploy/terraform apply -var="tag_version=${{needs.release.outputs.GIT_TAG}}" -auto-approve
         continue-on-error: false
 
 
