@@ -25,6 +25,9 @@ jobs:
   release:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     name: "release"
+    permissions:
+      contents: read
+      pages: write  
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
