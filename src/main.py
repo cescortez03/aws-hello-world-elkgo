@@ -1,2 +1,9 @@
 def lambda_handler(event,context):
-    return {"message": "Hola Mundo"}
+    return {
+        "statusCode": 200,
+        "body": "Hola Mundo!",
+        "headers": {
+            "Content-Type": "application/json",
+            "Custom-Header": "value"
+        }    
+    }
