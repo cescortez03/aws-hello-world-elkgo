@@ -1,1 +1,62 @@
+name: CI/CD Hello World
+on:
+  pull_request:
+    types: [opened, synchronize]
+  push:
+    branches:
+      - main
 
+jobs:
+  pr_validation:
+    if: github.event_name == 'pull_request'
+    name: "pr"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: pr
+        run: |
+          echo "Running pr"
+          echo "Build microservice, ie: docker build... Dockerfile"
+          echo "Run linting and static analyzers."
+
+  release:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    name: "release"
+    runs-on: ubuntu-latest
+    #needs: pr_validation
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: release Job
+        run: |
+          echo "Running release"
+          echo "Build microservice, ie: docker build... Dockerfile."
+          echo "Tags commit with a git tag."
+          echo "Push image to a container registry."
+
+  deploy_sandbox:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    name: "deploy-sandbox-us-west-2"
+    runs-on: ubuntu-latest
+    needs: release
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: deploy-sandbox
+        run: |
+          echo "Running Deploy Sandbox Job"
+          # Add sandbox deployment logic (e.g., Terraform apply to sandbox)
+
+  deploy_prod:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    name: "deploy-prod-us-west-2"
+    runs-on: ubuntu-latest
+    needs: deploy_sandbox
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: deploy-prod
+        run: |
+          echo "Running Deploy Prod Job"
+          # Add prod deployment logic (e.g., Terraform apply to prod)
