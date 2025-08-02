@@ -10,7 +10,7 @@ terraform {
 provider "aws" {
   default_tags {
     tags = {
-      environment = "sandbox"
+      environment = var.environment
     }
   }
 }
