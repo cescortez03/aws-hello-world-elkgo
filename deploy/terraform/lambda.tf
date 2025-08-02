@@ -7,6 +7,12 @@ resource "aws_lambda_function" "lambda_hworld" {
   memory_size = 128
   timeout     = 15
 
+  environment {
+    variables = {
+      IMAGE_TAG = var.tag_version
+    }
+  }
+
 }
 
 resource "aws_iam_role" "lambda_role" {
