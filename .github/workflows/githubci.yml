@@ -105,9 +105,9 @@ jobs:
         id: apply
         run: terraform -chdir=deploy/terraform apply -var="tag_version=${{needs.release.outputs.GIT_TAG}}" -auto-approve
         continue-on-error: false
-      - name: terraform-destroy
-        id: destroy
-        run: terraform -chdir=deploy/terraform destroy -auto-approve
-        continue-on-error: false
+      # - name: terraform-destroy
+      #   id: destroy
+      #   run: terraform -chdir=deploy/terraform destroy -auto-approve
+      #   continue-on-error: false
 
 
